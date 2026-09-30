@@ -1,0 +1,31 @@
+name: fintrack
+description: "A new Flutter personal finance & budget tracking app for young Tanzanians."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  sqflite: ^2.4.4
+  sqflite_common_ffi: ^2.4.1
+  sqlite3_flutter_libs: ^0.5.25
+  path: ^1.9.1
+  fl_chart: ^1.2.0
+  intl: ^0.20.3
+  provider: ^6.1.5+1
+  google_fonts: ^6.2.1
+  shared_preferences: ^2.5.3
+  crypto: ^3.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
