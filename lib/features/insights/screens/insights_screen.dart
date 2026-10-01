@@ -60,7 +60,6 @@ class _InsightsScreenState extends State<InsightsScreen> {
     final lastYearMonth = DateFormat('yyyy-MM').format(lastMonthDate);
 
     final expenseService = context.watch<ExpenseService>();
-    final incomeService = context.watch<IncomeService>();
 
     final currentSpent = expenseService.getTotalSpentForMonth(currentYearMonth);
     final lastSpent = expenseService.getTotalSpentForMonth(lastYearMonth);

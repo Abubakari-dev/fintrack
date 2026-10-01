@@ -9,17 +9,20 @@ class AuthService extends ChangeNotifier {
   static const String _keyOnboardingCompleted = 'onboarding_completed';
   static const String _keyPinHash = 'pin_hash';
   static const String _keyDarkMode = 'dark_mode';
+  static const String _keyLanguage = 'language_code';
 
   bool _isOnboardingCompleted = false;
   bool _hasPinSet = false;
   bool _isDarkMode = false;
   bool _isAuthenticated = false;
+  String _languageCode = 'sw';
   String? _cachedPinHash;
 
   bool get isOnboardingCompleted => _isOnboardingCompleted;
   bool get hasPinSet => _hasPinSet;
   bool get isDarkMode => _isDarkMode;
   bool get isAuthenticated => _isAuthenticated;
+  String get languageCode => _languageCode;
 
   Future<void> initAuth() async {
     final prefs = await SharedPreferences.getInstance();
@@ -27,6 +30,7 @@ class AuthService extends ChangeNotifier {
     _cachedPinHash = prefs.getString(_keyPinHash);
     _hasPinSet = _cachedPinHash != null && _cachedPinHash!.isNotEmpty;
     _isDarkMode = prefs.getBool(_keyDarkMode) ?? false;
+    _languageCode = prefs.getString(_keyLanguage) ?? 'sw';
     notifyListeners();
   }
 
@@ -70,6 +74,13 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> setLanguage(String code) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyLanguage, code);
+    _languageCode = code;
+    notifyListeners();
+  }
+
   void setAuthenticated(bool value) {
     _isAuthenticated = value;
     notifyListeners();
@@ -83,6 +94,7 @@ class AuthService extends ChangeNotifier {
     _cachedPinHash = null;
     _isDarkMode = false;
     _isAuthenticated = false;
+    _languageCode = 'sw';
     notifyListeners();
   }
 }

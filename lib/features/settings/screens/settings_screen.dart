@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:fintrack/core/constants/app_constants.dart';
 import 'package:fintrack/core/theme/app_colors.dart';
 import 'package:fintrack/core/theme/app_text_styles.dart';
+import 'package:fintrack/core/utils/app_localizations.dart';
 import 'package:fintrack/core/widgets/bottom_nav_bar.dart';
 import 'package:fintrack/features/auth/services/auth_service.dart';
 
@@ -81,15 +82,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final authService = context.watch<AuthService>();
+    final loc = AppLocalizations(authService.languageCode);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(loc.translate('settings')),
         automaticallyImplyLeading: false,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          Text(
+            loc.translate('language'),
+            style: AppTextStyles.sectionTitle(context, isDark: isDark),
+          ),
+          const SizedBox(height: 8),
+          ListTile(
+            title: Text(
+              loc.translate('language'),
+              style: AppTextStyles.body(context, isDark: isDark),
+            ),
+            subtitle: Text(
+              authService.languageCode == 'sw' ? 'Kiswahili 🇹🇿' : 'English 🇬🇧',
+              style: AppTextStyles.caption(context, isDark: isDark),
+            ),
+            trailing: DropdownButton<String>(
+              value: authService.languageCode,
+              items: const [
+                DropdownMenuItem(value: 'sw', child: Text('Kiswahili')),
+                DropdownMenuItem(value: 'en', child: Text('English')),
+              ],
+              onChanged: (val) {
+                if (val != null) {
+                  authService.setLanguage(val);
+                }
+              },
+            ),
+          ),
+          const Divider(height: 32),
           Text(
             'Appearance',
             style: AppTextStyles.sectionTitle(context, isDark: isDark),
@@ -97,7 +127,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 8),
           SwitchListTile(
             title: Text(
-              'Dark Mode',
+              loc.translate('darkMode'),
               style: AppTextStyles.body(context, isDark: isDark),
             ),
             subtitle: Text(
@@ -105,7 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: AppTextStyles.caption(context, isDark: isDark),
             ),
             value: authService.isDarkMode,
-            activeThumbColor: AppColors.primaryAccent,
+            activeColor: AppColors.primaryAccent,
             onChanged: (val) {
               authService.setDarkMode(val);
             },
@@ -120,7 +150,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(
               authService.hasPinSet
                   ? 'Change or Remove PIN'
-                  : 'Set Security PIN',
+                  : loc.translate('securityPin'),
               style: AppTextStyles.body(context, isDark: isDark),
             ),
             subtitle: Text(
@@ -160,7 +190,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 8),
           ListTile(
             title: Text(
-              'Clear All Data',
+              loc.translate('clearData'),
               style: AppTextStyles.body(
                 context,
                 isDark: isDark,

@@ -10,6 +10,8 @@ class Expense {
   final int walletId;
   final String date; // YYYY-MM-DD
   final String? note;
+  final bool isRecurring;
+  final String recurrence; // 'none', 'monthly', 'weekly'
 
   Expense({
     this.id,
@@ -19,6 +21,8 @@ class Expense {
     required this.walletId,
     required this.date,
     this.note,
+    this.isRecurring = false,
+    this.recurrence = 'none',
   });
 
   Map<String, dynamic> toMap() {
@@ -30,6 +34,8 @@ class Expense {
       DbConstants.colExpenseWalletId: walletId,
       DbConstants.colExpenseDate: date,
       DbConstants.colExpenseNote: note,
+      DbConstants.colExpenseIsRecurring: isRecurring ? 1 : 0,
+      DbConstants.colExpenseRecurrence: recurrence,
     };
   }
 
@@ -42,6 +48,8 @@ class Expense {
       walletId: map[DbConstants.colExpenseWalletId] as int? ?? 1,
       date: map[DbConstants.colExpenseDate] as String? ?? '',
       note: map[DbConstants.colExpenseNote] as String?,
+      isRecurring: (map[DbConstants.colExpenseIsRecurring] as int?) == 1,
+      recurrence: map[DbConstants.colExpenseRecurrence] as String? ?? 'none',
     );
   }
 
@@ -53,6 +61,8 @@ class Expense {
     int? walletId,
     String? date,
     String? note,
+    bool? isRecurring,
+    String? recurrence,
   }) {
     return Expense(
       id: id ?? this.id,
@@ -62,6 +72,8 @@ class Expense {
       walletId: walletId ?? this.walletId,
       date: date ?? this.date,
       note: note ?? this.note,
+      isRecurring: isRecurring ?? this.isRecurring,
+      recurrence: recurrence ?? this.recurrence,
     );
   }
 }

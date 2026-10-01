@@ -28,6 +28,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   String _selectedCategory = AppConstants.expenseCategories.first['name'];
   int? _selectedWalletId;
   DateTime _selectedDate = DateTime.now();
+  bool _isRecurring = false;
+  String _recurrence = 'monthly';
 
   @override
   void initState() {
@@ -88,6 +90,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       note: _noteController.text.trim().isEmpty
           ? null
           : _noteController.text.trim(),
+      isRecurring: _isRecurring,
+      recurrence: _isRecurring ? _recurrence : 'none',
     );
 
     final expenseService = context.read<ExpenseService>();
@@ -279,6 +283,25 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                       ],
                     ),
                   ),
+                ),
+                const SizedBox(height: 20),
+                // Recurring Toggle
+                SwitchListTile(
+                  title: Text(
+                    'Recurring Transaction',
+                    style: AppTextStyles.body(context, isDark: isDark),
+                  ),
+                  subtitle: Text(
+                    'Repeat automatically every month',
+                    style: AppTextStyles.caption(context, isDark: isDark),
+                  ),
+                  value: _isRecurring,
+                  activeColor: AppColors.primaryAccent,
+                  onChanged: (val) {
+                    setState(() {
+                      _isRecurring = val;
+                    });
+                  },
                 ),
                 const SizedBox(height: 20),
                 // Optional Note

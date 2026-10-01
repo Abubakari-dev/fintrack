@@ -53,6 +53,8 @@ class DbHelper {
         ${DbConstants.colExpenseWalletId} INTEGER NOT NULL,
         ${DbConstants.colExpenseDate} TEXT NOT NULL,
         ${DbConstants.colExpenseNote} TEXT,
+        ${DbConstants.colExpenseIsRecurring} INTEGER NOT NULL DEFAULT 0,
+        ${DbConstants.colExpenseRecurrence} TEXT NOT NULL DEFAULT 'none',
         FOREIGN KEY (${DbConstants.colExpenseWalletId}) REFERENCES ${DbConstants.tableWallets} (${DbConstants.colId}) ON DELETE CASCADE
       )
     ''');
@@ -67,6 +69,8 @@ class DbHelper {
         ${DbConstants.colIncomeWalletId} INTEGER NOT NULL,
         ${DbConstants.colIncomeDate} TEXT NOT NULL,
         ${DbConstants.colIncomeNote} TEXT,
+        ${DbConstants.colIncomeIsRecurring} INTEGER NOT NULL DEFAULT 0,
+        ${DbConstants.colIncomeRecurrence} TEXT NOT NULL DEFAULT 'none',
         FOREIGN KEY (${DbConstants.colIncomeWalletId}) REFERENCES ${DbConstants.tableWallets} (${DbConstants.colId}) ON DELETE CASCADE
       )
     ''');
@@ -108,7 +112,12 @@ class DbHelper {
   }
 
   Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
-    // Handle future database migrations here
+    if (oldVersion < 2) {
+      await db.execute('ALTER TABLE ${DbConstants.tableExpenses} ADD COLUMN ${DbConstants.colExpenseIsRecurring} INTEGER NOT NULL DEFAULT 0');
+      await db.execute('ALTER TABLE ${DbConstants.tableExpenses} ADD COLUMN ${DbConstants.colExpenseRecurrence} TEXT NOT NULL DEFAULT "none"');
+      await db.execute('ALTER TABLE ${DbConstants.tableIncome} ADD COLUMN ${DbConstants.colIncomeIsRecurring} INTEGER NOT NULL DEFAULT 0');
+      await db.execute('ALTER TABLE ${DbConstants.tableIncome} ADD COLUMN ${DbConstants.colIncomeRecurrence} TEXT NOT NULL DEFAULT "none"');
+    }
   }
 
   Future<void> close() async {

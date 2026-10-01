@@ -2,7 +2,7 @@
 
 class DbConstants {
   static const String dbName = 'fintrack.db';
-  static const int dbVersion = 1;
+  static const int dbVersion = 2; // Incremented for new columns
 
   // Table names
   static const String tableExpenses = 'expenses';
@@ -22,6 +22,8 @@ class DbConstants {
   static const String colExpenseWalletId = 'wallet_id';
   static const String colExpenseDate = 'date';
   static const String colExpenseNote = 'note';
+  static const String colExpenseIsRecurring = 'is_recurring';
+  static const String colExpenseRecurrence = 'recurrence';
 
   // Income columns
   static const String colIncomeTitle = 'title';
@@ -30,6 +32,8 @@ class DbConstants {
   static const String colIncomeWalletId = 'wallet_id';
   static const String colIncomeDate = 'date';
   static const String colIncomeNote = 'note';
+  static const String colIncomeIsRecurring = 'is_recurring';
+  static const String colIncomeRecurrence = 'recurrence';
 
   // Savings Goals columns
   static const String colGoalTitle = 'title';
